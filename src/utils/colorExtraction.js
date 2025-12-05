@@ -1,19 +1,48 @@
 /**
  * K-means clustering for dominant color extraction
- * With improved color diversity to avoid similar colors
+ * Prioritizes vibrant/saturated colors over neutrals
  */
 
-import { colorDistance, rgbToHex } from './colorUtils';
+import { colorDistance, rgbToHex, rgbToHsl } from './colorUtils';
 
 const MAX_DIMENSION = 400;
 const SAMPLE_STEP = 4; // Sample every 4th pixel
-const K_CLUSTERS = 8; // Extract more clusters initially for better diversity
+const K_CLUSTERS = 12; // More clusters to capture accent colors
 const MAX_ITERATIONS = 25;
 const CONVERGENCE_THRESHOLD = 1;
 
 // Minimum distance between colors to be considered "different"
-// ~50 in RGB space is a noticeable difference, ~75 is clearly distinct
-const MIN_COLOR_DISTANCE = 60;
+const MIN_COLOR_DISTANCE = 50;
+
+/**
+ * Calculate color "vibrancy" score - prioritizes saturated, non-neutral colors
+ * @param {number[]} rgb - [r, g, b] array
+ * @returns {number} Vibrancy score (0-1)
+ */
+function getVibrancy(rgb) {
+  const [h, s, l] = rgbToHsl(rgb);
+
+  // Saturation is the primary factor (0-100 scale)
+  const saturationScore = s / 100;
+
+  // Penalize very dark or very light colors (they appear less vibrant)
+  // Optimal lightness is around 40-60%
+  const lightnessScore = 1 - Math.abs(l - 50) / 50;
+
+  // Combine: saturation matters most, lightness is secondary
+  return (saturationScore * 0.7) + (lightnessScore * 0.3);
+}
+
+/**
+ * Check if a color is neutral (gray/black/white)
+ * @param {number[]} rgb - [r, g, b] array
+ * @returns {boolean} True if neutral
+ */
+function isNeutral(rgb) {
+  const [, s, l] = rgbToHsl(rgb);
+  // Low saturation OR very dark/light = neutral
+  return s < 12 || l < 8 || l > 92;
+}
 
 /**
  * Extract pixel data from an image
@@ -63,9 +92,11 @@ function getPixelData(image) {
 function initializeCentroidsPlusPlus(pixels, k) {
   const centroids = [];
 
-  // Pick first centroid randomly
-  const firstIdx = Math.floor(Math.random() * pixels.length);
-  centroids.push([...pixels[firstIdx]]);
+  // Pick first centroid randomly, but prefer a vibrant pixel
+  const vibrantPixels = pixels.filter(p => getVibrancy(p) > 0.3);
+  const startPool = vibrantPixels.length > 100 ? vibrantPixels : pixels;
+  const firstIdx = Math.floor(Math.random() * startPool.length);
+  centroids.push([...startPool[firstIdx]]);
 
   // Pick remaining centroids with probability proportional to distance squared
   for (let i = 1; i < k; i++) {
@@ -76,7 +107,9 @@ function initializeCentroidsPlusPlus(pixels, k) {
         const dist = colorDistance(pixel, centroid);
         if (dist < minDist) minDist = dist;
       }
-      return minDist * minDist; // Square for probability weighting
+      // Boost probability for vibrant colors
+      const vibrancyBoost = 1 + getVibrancy(pixel) * 2;
+      return minDist * minDist * vibrancyBoost;
     });
 
     // Calculate cumulative distribution
@@ -163,17 +196,55 @@ function hasConverged(oldCentroids, newCentroids) {
 }
 
 /**
+ * Calculate importance score for ranking colors
+ * Balances pixel count with vibrancy - vibrant colors get boosted even if smaller
+ * @param {Object} color - Color object with rgb and count
+ * @param {number} totalPixels - Total pixel count
+ * @returns {number} Importance score
+ */
+function getImportanceScore(color, totalPixels) {
+  const percentageScore = color.count / totalPixels;
+  const vibrancy = getVibrancy(color.rgb);
+  const neutral = isNeutral(color.rgb);
+
+  // Base score from pixel percentage
+  let score = percentageScore;
+
+  // Boost vibrant colors significantly
+  // A color with 5% coverage but high vibrancy can compete with 20% neutral
+  if (vibrancy > 0.4) {
+    score *= (1 + vibrancy * 3); // Up to 4x boost for very vibrant
+  }
+
+  // Penalize neutrals unless they're truly dominant (>40%)
+  if (neutral && percentageScore < 0.4) {
+    score *= 0.3;
+  }
+
+  return score;
+}
+
+/**
  * Filter colors to ensure minimum distance between them
- * Keeps the most prominent colors while ensuring diversity
- * @param {Object[]} colors - Sorted array of color objects (by percentage)
+ * Prioritizes vibrant colors over neutrals
+ * @param {Object[]} colors - Sorted array of color objects (by importance)
  * @param {number} minDistance - Minimum color distance required
  * @param {number} targetCount - Target number of distinct colors
  * @returns {Object[]} Filtered colors with sufficient diversity
  */
 function filterDistinctColors(colors, minDistance, targetCount) {
   const distinct = [];
+  let neutralCount = 0;
+  const maxNeutrals = 1; // Only allow 1 neutral in top results
 
   for (const color of colors) {
+    const neutral = isNeutral(color.rgb);
+
+    // Skip if we already have enough neutrals (unless it's very dominant)
+    if (neutral && neutralCount >= maxNeutrals && color.percentage < 40) {
+      continue;
+    }
+
     // Check if this color is sufficiently different from all selected colors
     const isTooSimilar = distinct.some(selected =>
       colorDistance(color.rgb, selected.rgb) < minDistance
@@ -181,6 +252,7 @@ function filterDistinctColors(colors, minDistance, targetCount) {
 
     if (!isTooSimilar) {
       distinct.push(color);
+      if (neutral) neutralCount++;
     }
 
     // Stop once we have enough distinct colors
@@ -271,30 +343,32 @@ function kMeans(pixels) {
   const counts = Array.from({ length: K_CLUSTERS }, () => 0);
   assignments.forEach((cluster) => counts[cluster]++);
 
+  const totalPixels = pixels.length;
+
   // Create color objects with percentages
   const colors = centroids.map((centroid, idx) => ({
     rgb: centroid.map(Math.round),
     hex: rgbToHex(centroid),
-    percentage: (counts[idx] / pixels.length) * 100,
+    percentage: (counts[idx] / totalPixels) * 100,
     count: counts[idx],
   }));
 
-  // Sort by percentage (descending)
-  const sortedColors = colors.sort((a, b) => b.percentage - a.percentage);
-
-  // Merge very similar colors first (using a smaller threshold)
-  const mergedColors = mergeSimilarColors(sortedColors, MIN_COLOR_DISTANCE * 0.6);
+  // Merge very similar colors first
+  const mergedColors = mergeSimilarColors(colors, MIN_COLOR_DISTANCE * 0.5);
 
   // Recalculate percentages after merging
-  const totalPixels = mergedColors.reduce((sum, c) => sum + c.count, 0);
+  const mergedTotal = mergedColors.reduce((sum, c) => sum + c.count, 0);
   mergedColors.forEach(c => {
-    c.percentage = (c.count / totalPixels) * 100;
+    c.percentage = (c.count / mergedTotal) * 100;
   });
 
-  // Sort again after merging
-  mergedColors.sort((a, b) => b.percentage - a.percentage);
+  // Calculate importance scores and sort by importance (vibrancy-boosted)
+  mergedColors.forEach(c => {
+    c.importance = getImportanceScore(c, mergedTotal);
+  });
+  mergedColors.sort((a, b) => b.importance - a.importance);
 
-  // Filter to get distinct colors for the top results
+  // Filter to get distinct colors, prioritizing vibrant ones
   const distinctColors = filterDistinctColors(mergedColors, MIN_COLOR_DISTANCE, 5);
 
   // Recalculate percentages to sum to 100% for the distinct colors
@@ -302,6 +376,9 @@ function kMeans(pixels) {
   distinctColors.forEach(c => {
     c.percentage = (c.count / distinctTotal) * 100;
   });
+
+  // Final sort by actual percentage for display
+  distinctColors.sort((a, b) => b.percentage - a.percentage);
 
   return distinctColors;
 }
