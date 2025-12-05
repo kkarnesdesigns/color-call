@@ -206,7 +206,7 @@ export default function ColorCall() {
       {/* Footer */}
       <footer className="footer">
         <p className="footer-text">
-          The 60/20/10 rule: 60% dominant color, 20% secondary, 10% accent.
+          The 60/30/10 rule: 60% dominant color, 30% secondary, 10% accent.
         </p>
         <p className="footer-text">
           A guideline—not a law. Great cinematography knows when to break it.

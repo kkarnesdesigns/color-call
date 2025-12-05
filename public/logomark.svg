@@ -27,7 +27,7 @@
       stroke-width="7"
       stroke-linecap="round"
     />
-    <!-- Middle arc - 20% -->
+    <!-- Middle arc - 30% -->
     <path 
       d="M 22 -17 A 23 23 0 1 0 22 17" 
       fill="none" 

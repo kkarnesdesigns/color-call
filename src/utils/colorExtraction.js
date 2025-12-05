@@ -196,7 +196,7 @@ export async function extractColors(imageSrc) {
 }
 
 /**
- * Calculate the 60/20/10 composition score
+ * Calculate the 60/30/10 composition score
  * @param {Object[]} colors - Array of color objects with percentages
  * @returns {Object} Score object with score, verdict, and deviations
  */
@@ -205,7 +205,7 @@ export function calculateCompositionScore(colors) {
     return { score: 0, verdict: 'Insufficient colors', deviations: [] };
   }
 
-  const targets = [60, 20, 10];
+  const targets = [60, 30, 10];
   const topThree = colors.slice(0, 3);
 
   const deviations = topThree.map((color, idx) => {

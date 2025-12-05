@@ -1,19 +1,18 @@
 import './SpectrumBar.css';
 
 export default function SpectrumBar({ colors, showIdealComparison = false }) {
-  // Ideal 60/20/10 distribution for comparison
+  // Ideal 60/30/10 distribution for comparison
   const idealDistribution = [
     { percentage: 60, label: '60%' },
-    { percentage: 20, label: '20%' },
+    { percentage: 30, label: '30%' },
     { percentage: 10, label: '10%' },
-    { percentage: 10, label: '' }, // Remaining
   ];
 
   return (
     <div className="spectrum-bar-container">
       {showIdealComparison && (
         <div className="comparison-row">
-          <span className="bar-label label">Ideal 60/20/10</span>
+          <span className="bar-label label">Ideal 60/30/10</span>
           <div className="spectrum-bar ideal-bar">
             {idealDistribution.map((segment, idx) => (
               <div
