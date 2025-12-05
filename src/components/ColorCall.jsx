@@ -3,14 +3,24 @@ import ImageUpload from './ImageUpload';
 import ColorSwatch from './ColorSwatch';
 import SpectrumBar from './SpectrumBar';
 import ScoreDisplay from './ScoreDisplay';
-import FeaturePlaceholder from './FeaturePlaceholder';
+import ColorHarmony from './ColorHarmony';
+import ZoneSystem from './ZoneSystem';
+import VisualWeight from './VisualWeight';
+import StyleMatching from './StyleMatching';
 import { extractColors, calculateCompositionScore } from '../utils/colorExtraction';
+import { analyzeColorHarmony } from '../utils/colorHarmony';
+import { analyzeZoneSystem } from '../utils/zoneSystem';
+import { analyzeVisualWeight } from '../utils/visualWeight';
+import { rgbToHsl } from '../utils/colorUtils';
 import './ColorCall.css';
 
 export default function ColorCall() {
   const [image, setImage] = useState(null);
   const [colors, setColors] = useState([]);
   const [scoreData, setScoreData] = useState(null);
+  const [harmonyData, setHarmonyData] = useState(null);
+  const [zoneData, setZoneData] = useState(null);
+  const [weightData, setWeightData] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState(null);
 
@@ -20,13 +30,33 @@ export default function ColorCall() {
     setError(null);
 
     try {
-      const extractedColors = await extractColors(imageSrc);
-      setColors(extractedColors);
+      // Run all analyses in parallel
+      const [extractedColors, zones, weight] = await Promise.all([
+        extractColors(imageSrc),
+        analyzeZoneSystem(imageSrc),
+        analyzeVisualWeight(imageSrc)
+      ]);
 
+      // Add HSL data to colors for harmony and style matching
+      const colorsWithHsl = extractedColors.map(c => ({
+        ...c,
+        hsl: rgbToHsl(c.rgb)
+      }));
+
+      setColors(colorsWithHsl);
+      setZoneData(zones);
+      setWeightData(weight);
+
+      // Calculate composition score
       const score = calculateCompositionScore(extractedColors);
       setScoreData(score);
+
+      // Analyze color harmony
+      const harmony = analyzeColorHarmony(colorsWithHsl);
+      setHarmonyData(harmony);
+
     } catch (err) {
-      console.error('Color extraction failed:', err);
+      console.error('Analysis failed:', err);
       setError('Failed to analyze image. Please try another file.');
     } finally {
       setAnalyzing(false);
@@ -37,27 +67,19 @@ export default function ColorCall() {
     setImage(null);
     setColors([]);
     setScoreData(null);
+    setHarmonyData(null);
+    setZoneData(null);
+    setWeightData(null);
     setError(null);
   };
 
-  const phase2Features = [
-    {
-      title: 'Color Harmony Score',
-      description: 'Detect complementary, analogous, and triadic palettes',
-    },
-    {
-      title: 'Zone System Mapping',
-      description: 'Ansel Adams exposure zone analysis',
-    },
-    {
-      title: 'Visual Weight Distribution',
-      description: 'Center of gravity and balance analysis',
-    },
-    {
-      title: 'Cinematographer Style Matching',
-      description: 'Compare to Deakins, Lubezki, and more',
-    },
-  ];
+  // Prepare combined analysis for style matching
+  const combinedAnalysis = colors.length > 0 ? {
+    colors,
+    harmony: harmonyData,
+    zoneData,
+    weightData
+  } : null;
 
   return (
     <div className="color-call">
@@ -150,7 +172,7 @@ export default function ColorCall() {
             {analyzing ? (
               <div className="loading-state">
                 <div className="spinner" />
-                <span className="loading-text">Extracting palette...</span>
+                <span className="loading-text">Analyzing frame...</span>
               </div>
             ) : error ? (
               <div className="error-state">
@@ -188,17 +210,14 @@ export default function ColorCall() {
           </div>
         )}
 
-        {/* Phase 2 feature placeholders */}
-        <section className="phase2-section">
-          <h2 className="section-title">Other Notes/Tools</h2>
-          <div className="phase2-grid">
-            {phase2Features.map((feature, idx) => (
-              <FeaturePlaceholder
-                key={idx}
-                title={feature.title}
-                description={feature.description}
-              />
-            ))}
+        {/* Advanced analysis tools */}
+        <section className="advanced-section">
+          <h2 className="section-title">Advanced Analysis</h2>
+          <div className="advanced-grid">
+            <ColorHarmony colors={colors} />
+            <ZoneSystem zoneData={zoneData} />
+            <VisualWeight weightData={weightData} />
+            <StyleMatching analysis={combinedAnalysis} />
           </div>
         </section>
       </main>

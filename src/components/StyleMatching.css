@@ -1,0 +1,128 @@
+.style-matching {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* Top match section */
+.top-match {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background-color: var(--darkroom);
+  border-radius: var(--radius);
+}
+
+.match-score-ring {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.circular-chart {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: var(--frame);
+  stroke-width: 3;
+}
+
+.circle {
+  fill: none;
+  stroke: var(--accent-gold);
+  stroke-width: 3;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0, 100;
+  }
+}
+
+.circular-chart .percentage {
+  fill: var(--projection);
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  text-anchor: middle;
+}
+
+.match-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  min-width: 0;
+}
+
+.match-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--projection);
+}
+
+.match-notable {
+  font-size: 0.75rem;
+  color: var(--midtone);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Other matches */
+.other-matches {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.match-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.match-bar-container {
+  height: 6px;
+  background-color: var(--frame);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.match-bar {
+  height: 100%;
+  background-color: var(--midtone);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.match-item-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.match-item-name {
+  font-size: 0.875rem;
+  color: var(--projection);
+}
+
+.match-item-score {
+  font-size: 0.75rem;
+  color: var(--midtone);
+}
+
+/* Note */
+.style-note {
+  font-size: 0.75rem;
+  color: var(--midtone);
+  text-align: center;
+  font-style: italic;
+  margin-top: var(--spacing-xs);
+}

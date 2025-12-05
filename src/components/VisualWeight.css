@@ -1,0 +1,159 @@
+.visual-weight {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.weight-result {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.weight-score {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  line-height: 1;
+  min-width: 60px;
+}
+
+.weight-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.weight-type {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--projection);
+}
+
+.weight-description {
+  font-size: 0.875rem;
+  color: var(--midtone);
+}
+
+/* Visualization */
+.weight-visualization {
+  display: flex;
+  justify-content: center;
+}
+
+.heatmap {
+  position: relative;
+  width: 150px;
+  height: 100px;
+  background-color: var(--darkroom);
+  border: 1px solid var(--frame);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.heatmap-row {
+  display: flex;
+  height: 33.33%;
+}
+
+.heatmap-cell {
+  flex: 1;
+  border: 1px solid rgba(51, 51, 51, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+/* Center of mass marker */
+.center-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.marker-crosshair {
+  width: 16px;
+  height: 16px;
+  position: relative;
+}
+
+.marker-crosshair::before,
+.marker-crosshair::after {
+  content: '';
+  position: absolute;
+  background-color: var(--projection);
+}
+
+.marker-crosshair::before {
+  width: 2px;
+  height: 16px;
+  left: 7px;
+  top: 0;
+}
+
+.marker-crosshair::after {
+  width: 16px;
+  height: 2px;
+  top: 7px;
+  left: 0;
+}
+
+/* Rule of thirds lines */
+.thirds-line {
+  position: absolute;
+  background-color: var(--frame);
+  opacity: 0.5;
+}
+
+.thirds-line.vertical {
+  width: 1px;
+  height: 100%;
+  top: 0;
+}
+
+.thirds-line.horizontal {
+  width: 100%;
+  height: 1px;
+  left: 0;
+}
+
+/* Quadrant stats */
+.quadrant-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-sm);
+  background-color: var(--darkroom);
+  border-radius: var(--radius);
+}
+
+.quadrant-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.quadrant-value {
+  font-size: 0.75rem;
+  color: var(--midtone);
+  width: 45%;
+  text-align: center;
+  padding: var(--spacing-xs);
+  background-color: var(--slate);
+  border-radius: 2px;
+}
+
+/* Center coordinates */
+.center-coords {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.coords-label {
+  font-size: 0.5rem;
+}
+
+.coords-value {
+  font-size: 0.75rem;
+  color: var(--midtone);
+}

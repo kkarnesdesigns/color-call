@@ -1,0 +1,89 @@
+.color-harmony {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.feature-label {
+  font-size: 0.625rem;
+}
+
+.empty-message {
+  color: var(--midtone);
+  font-size: 0.875rem;
+  text-align: center;
+  padding: var(--spacing-lg);
+}
+
+.harmony-result {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.harmony-score {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  line-height: 1;
+  min-width: 60px;
+}
+
+.harmony-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.harmony-type {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--projection);
+}
+
+.harmony-description {
+  font-size: 0.875rem;
+  color: var(--midtone);
+}
+
+.color-wheel-container {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-sm);
+}
+
+.color-wheel {
+  width: 120px;
+  height: 120px;
+}
+
+.color-positions {
+  display: flex;
+  justify-content: space-around;
+  gap: var(--spacing-sm);
+}
+
+.color-position {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.position-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--frame);
+}
+
+.position-name {
+  font-size: 0.75rem;
+  color: var(--projection);
+}
+
+.position-hue {
+  font-size: 0.625rem;
+  color: var(--midtone);
+}

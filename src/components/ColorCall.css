@@ -165,8 +165,8 @@
   padding: 0;
 }
 
-/* Phase 2 section */
-.phase2-section {
+/* Advanced analysis section */
+.advanced-section {
   margin-top: var(--spacing-2xl);
 }
 
@@ -177,7 +177,7 @@
   margin-bottom: var(--spacing-lg);
 }
 
-.phase2-grid {
+.advanced-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-md);
@@ -232,7 +232,7 @@
     padding: var(--spacing-md);
   }
 
-  .phase2-grid {
+  .advanced-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -1,0 +1,156 @@
+.zone-system {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.zone-character {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.character-name {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--projection);
+}
+
+.character-description {
+  font-size: 0.875rem;
+  color: var(--midtone);
+}
+
+/* Zone histogram */
+.zone-histogram {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 80px;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--frame);
+  gap: 2px;
+}
+
+.zone-bar-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.zone-bar {
+  width: 100%;
+  min-height: 2px;
+  border-radius: 2px 2px 0 0;
+  transition: height 0.3s ease;
+}
+
+.zone-bar.shadow {
+  background: linear-gradient(to top, #1a1a1a, #333);
+}
+
+.zone-bar.midtone {
+  background: linear-gradient(to top, #555, #888);
+}
+
+.zone-bar.highlight {
+  background: linear-gradient(to top, #aaa, #ddd);
+}
+
+.zone-label {
+  font-size: 0.625rem;
+  color: var(--midtone);
+  margin-top: var(--spacing-xs);
+  font-family: var(--font-mono);
+}
+
+/* Tonal distribution bar */
+.tonal-distribution {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.tonal-segment {
+  display: flex;
+  height: 12px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.tonal-bar {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.tonal-bar.shadows {
+  background-color: #333;
+}
+
+.tonal-bar.midtones {
+  background-color: #777;
+}
+
+.tonal-bar.highlights {
+  background-color: #bbb;
+}
+
+.tonal-labels {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.tonal-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 0.75rem;
+  color: var(--midtone);
+}
+
+.tonal-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.tonal-dot.shadows {
+  background-color: #333;
+}
+
+.tonal-dot.midtones {
+  background-color: #777;
+}
+
+.tonal-dot.highlights {
+  background-color: #bbb;
+}
+
+/* Stats */
+.zone-stats {
+  display: flex;
+  justify-content: space-around;
+  padding-top: var(--spacing-sm);
+}
+
+.zone-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+}
+
+.stat-label {
+  font-size: 0.5rem;
+}
