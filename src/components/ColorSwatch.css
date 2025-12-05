@@ -1,0 +1,77 @@
+.color-swatch {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--slate);
+  border-radius: var(--radius);
+  border: 1px solid var(--frame);
+}
+
+.swatch-color {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius);
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: var(--spacing-xs);
+}
+
+.swatch-percentage {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.swatch-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  justify-content: center;
+}
+
+.swatch-role {
+  font-size: 0.625rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+.swatch-hex {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--projection);
+}
+
+.swatch-rgb {
+  font-size: 0.875rem;
+  color: var(--midtone);
+}
+
+.swatch-deviation {
+  font-size: 0.75rem;
+  margin-top: var(--spacing-xs);
+}
+
+.swatch-deviation.within {
+  color: var(--success);
+}
+
+.swatch-deviation.beyond {
+  color: var(--warning);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .swatch-color {
+    width: 60px;
+    height: 60px;
+  }
+
+  .swatch-hex {
+    font-size: 0.875rem;
+  }
+
+  .swatch-rgb {
+    font-size: 0.75rem;
+  }
+}

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!--
+    Color Call - Logomark Only
+    For use in favicons, app icons, compact spaces
+  -->
+  
+  <!-- Film frame corner marks -->
+  <rect x="8" y="8" width="8" height="2" fill="#333" rx="0.5"/>
+  <rect x="8" y="8" width="2" height="8" fill="#333" rx="0.5"/>
+  
+  <rect x="84" y="8" width="8" height="2" fill="#333" rx="0.5"/>
+  <rect x="90" y="8" width="2" height="8" fill="#333" rx="0.5"/>
+  
+  <rect x="8" y="90" width="8" height="2" fill="#333" rx="0.5"/>
+  <rect x="8" y="84" width="2" height="8" fill="#333" rx="0.5"/>
+  
+  <rect x="84" y="90" width="8" height="2" fill="#333" rx="0.5"/>
+  <rect x="90" y="84" width="2" height="8" fill="#333" rx="0.5"/>
+  
+  <!-- Nested C arcs -->
+  <g transform="translate(50, 50)">
+    <!-- Outer arc - 60% -->
+    <path 
+      d="M 28 -24 A 32 32 0 1 0 28 24" 
+      fill="none" 
+      stroke="#E8E6E3" 
+      stroke-width="7"
+      stroke-linecap="round"
+    />
+    <!-- Middle arc - 20% -->
+    <path 
+      d="M 22 -17 A 23 23 0 1 0 22 17" 
+      fill="none" 
+      stroke="#888888" 
+      stroke-width="4.5"
+      stroke-linecap="round"
+    />
+    <!-- Inner arc - 10% -->
+    <path 
+      d="M 15 -10 A 14 14 0 1 0 15 10" 
+      fill="none" 
+      stroke="#C9A227" 
+      stroke-width="2.5"
+      stroke-linecap="round"
+    />
+  </g>
+</svg>

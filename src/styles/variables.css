@@ -1,0 +1,44 @@
+:root {
+  --darkroom: #0A0A0B;
+  --slate: #141416;
+  --projection: #E8E6E3;
+  --midtone: #888888;
+  --accent-gold: #C9A227;
+  --frame: #333333;
+
+  /* Semantic colors */
+  --success: #4a9;
+  --warning: #e85;
+
+  /* Typography */
+  --font-primary: "Source Serif 4", Georgia, serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Border radius */
+  --radius: 4px;
+}
+
+/* Film grain texture overlay */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+}
+
+.grain-overlay svg {
+  width: 100%;
+  height: 100%;
+}

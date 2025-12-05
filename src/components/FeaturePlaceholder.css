@@ -1,0 +1,29 @@
+.feature-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xl);
+  min-height: 120px;
+  text-align: center;
+}
+
+.feature-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--projection);
+}
+
+.feature-status {
+  font-size: 0.625rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--frame);
+  border-radius: var(--radius);
+}
+
+.feature-description {
+  font-size: 0.875rem;
+  color: var(--midtone);
+  margin-top: var(--spacing-xs);
+}
